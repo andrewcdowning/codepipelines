@@ -1,9 +1,22 @@
-import * as cdk from '@aws-cdk/core';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import { CodePipeline, ShellStep, CodePipelineSource } from 'aws-cdk-lib/pipelines';
+import { pipeline } from 'stream';
 
-export class CodepipelinesStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class CodepipelinesStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    new CodePipeline(this, 'exampleCICDPipeline', {
+      pipelineName: 'pipeline',
+      synth: new ShellStep('Synth', {
+        input: CodePipelineSource.gitHub('andrewcdowning/codepipelines', 'main'),
+        commands: [
+          'npm ci',
+          'npm run build',
+          'npx cdk synth'
+        ]
+      })
+    })
   }
 }
