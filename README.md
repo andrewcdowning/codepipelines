@@ -1,10 +1,16 @@
-# Welcome to your CDK TypeScript project
+## AWS Code Pipelines Example
 
-This is a blank project for TypeScript development with CDK.
+```mermaid
+flowchart LR
+G(Github) -->|update| A(Code Build);
+A --> B(beta stage);
+B --> C{Manual Approval};
+C -->|yes| P(Prod Stage)
+C -->|no| e(wait)
+```
+There is a lambda stub to use as an example for deployment
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
-
-## Useful commands
+### Useful commands
 
 * `npm run build`   compile typescript to js
 * `npm run watch`   watch for changes and compile
